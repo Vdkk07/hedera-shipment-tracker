@@ -1,133 +1,82 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreateShipmentForm } from "@/components/CreateShipmentForm";
-import { ShipmentTable } from "@/components/ShipmentTable";
-import { CreateShipmentData, Shipment, ShipmentStatus } from "@/types/shipment";
-import { Plus, Search } from "lucide-react";
 import { CustomSidebar } from "@/components/CustomSidebar";
+import { Plus, Search, Package, BarChart3 } from "lucide-react";
+import Link from "next/link";
 
 export default function Dashboard() {
-  const [shipments, setShipments] = useState<Shipment[]>([]);
-  const [isCreating, setIsCreating] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("create");
-  const searchParams = useSearchParams();
-
-  // Mock data for demonstration
-  const mockShipments: Shipment[] = [
-    {
-      id: "1",
-      tokenName: "Digital Gold",
-      tokenSymbol: "DGOLD",
-      shipmentId: "SHIP-001",
-      from: "New York, NY",
-      to: "Los Angeles, CA",
-      contents: "Electronics and gadgets",
-      receiverAccountId: "0.0.123456",
-      status: ShipmentStatus.IN_TRANSIT,
-      createdAt: new Date("2024-01-15T10:30:00"),
-      updatedAt: new Date("2024-01-16T14:20:00"),
-    },
-    {
-      id: "2",
-      tokenName: "Silver Token",
-      tokenSymbol: "SILVER",
-      shipmentId: "SHIP-002",
-      from: "Chicago, IL",
-      to: "Miami, FL",
-      contents: "Medical supplies",
-      receiverAccountId: "0.0.789012",
-      status: ShipmentStatus.DELIVERED,
-      createdAt: new Date("2024-01-10T08:15:00"),
-      updatedAt: new Date("2024-01-12T16:45:00"),
-    },
-    {
-      id: "3",
-      tokenName: "Platinum Coin",
-      tokenSymbol: "PLAT",
-      shipmentId: "SHIP-003",
-      from: "Seattle, WA",
-      to: "Boston, MA",
-      contents: "Luxury items",
-      receiverAccountId: "0.0.345678",
-      status: ShipmentStatus.CREATED,
-      createdAt: new Date("2024-01-20T12:00:00"),
-      updatedAt: new Date("2024-01-20T12:00:00"),
-    },
-  ];
-
-  const handleCreateShipment = async (data: CreateShipmentData) => {
-    setIsCreating(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const newShipment: Shipment = {
-      id: Date.now().toString(),
-      ...data,
-      status: ShipmentStatus.CREATED,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    
-    setShipments(prev => [newShipment, ...prev]);
-    setIsCreating(false);
-  };
-
-  const handleRefresh = async () => {
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setShipments(mockShipments);
-    setIsLoading(false);
-  };
-
-  // Handle URL tab parameter
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab === 'create' || tab === 'status') {
-      setActiveTab(tab);
-    }
-  }, [searchParams]);
-
-  // Initialize with mock data on first render
-  if (shipments.length === 0 && !isLoading) {
-    setShipments(mockShipments);
-  }
-
   return (
     <CustomSidebar>
       <div className="p-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="create" className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Create Shipment
-            </TabsTrigger>
-            <TabsTrigger value="status" className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              Check Status
-            </TabsTrigger>
-          </TabsList>
+        <h1 className="text-3xl font-bold mb-8">Dashboard Overview</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Create Shipment Card */}
+          <Link href="/dashboard/create-status">
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-200">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Plus className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Create Shipment</h2>
+                  <p className="text-gray-600 mt-1">Create a new shipment and track it on the Hedera network</p>
+                </div>
+              </div>
+            </div>
+          </Link>
 
-          <TabsContent value="create" className="mt-6">
-            <CreateShipmentForm 
-              onSubmit={handleCreateShipment} 
-              isLoading={isCreating}
-            />
-          </TabsContent>
+          {/* Check Status Card */}
+          <Link href="/dashboard/check-status">
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-200">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Search className="h-8 w-8 text-green-600" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Check Status</h2>
+                  <p className="text-gray-600 mt-1">View and manage existing shipments and their status</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
 
-          <TabsContent value="status" className="mt-6">
-            <ShipmentTable 
-              shipments={shipments} 
-              isLoading={isLoading}
-              onRefresh={handleRefresh}
-            />
-          </TabsContent>
-        </Tabs>
+        {/* Quick Stats */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Quick Stats</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <div className="flex items-center gap-3">
+                <Package className="h-6 w-6 text-blue-600" />
+                <div>
+                  <p className="text-sm text-gray-600">Total Shipments</p>
+                  <p className="text-2xl font-bold text-gray-900">3</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <div className="flex items-center gap-3">
+                <BarChart3 className="h-6 w-6 text-green-600" />
+                <div>
+                  <p className="text-sm text-gray-600">In Transit</p>
+                  <p className="text-2xl font-bold text-gray-900">1</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <div className="flex items-center gap-3">
+                <Search className="h-6 w-6 text-purple-600" />
+                <div>
+                  <p className="text-sm text-gray-600">Delivered</p>
+                  <p className="text-2xl font-bold text-gray-900">1</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </CustomSidebar>
   );

@@ -21,16 +21,10 @@ import {
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: Home,
-      isActive: true,
-    },
-    {
       title: "Create Shipment",
       url: "/dashboard?tab=create",
       icon: Plus,
-      isActive: false,
+      isActive: true,
     },
     {
       title: "Check Status",

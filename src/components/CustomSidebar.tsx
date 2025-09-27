@@ -74,13 +74,13 @@ export function CustomSidebar({ children }: SidebarProps) {
     {
       icon: <Plus className="h-5 w-5" />,
       label: "Create Shipment",
-      href: "/dashboard?tab=create",
+      href: "/dashboard/create-status",
       isActive: false,
     },
     {
       icon: <Search className="h-5 w-5" />,
       label: "Check Status",
-      href: "/dashboard?tab=status",
+      href: "/dashboard/check-status",
       isActive: false,
     },
   ];
