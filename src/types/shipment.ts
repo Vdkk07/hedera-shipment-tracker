@@ -43,10 +43,19 @@ export interface CheckShipmentData {
 export interface VerifyShipmentResponse {
   success: boolean;
   message: string;
-  data?: {
-    shipmentId: string;
-    tokenId: string;
+  shipment?: {
+    id: number;
+    shipment_id: string;
+    token_id: string;
+    nft_mint_tx_id: string;
+    shipment_cid: string;
+    sender: string;
+    receiver: string;
+    contents: string;
+    created_at: string;
+    current_location: string;
     status: string;
-    location: string;
+    current_owner: string;
+    receiver_account_id: string;
   };
 }
