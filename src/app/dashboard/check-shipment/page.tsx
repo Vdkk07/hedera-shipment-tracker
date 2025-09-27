@@ -11,7 +11,7 @@ export default function CheckShipment() {
     const [verificationResult, setVerificationResult] = useState<{
         success: boolean;
         message: string;
-        data?: VerifyShipmentResponse['data'];
+        data?: VerifyShipmentResponse["shipment"];
     } | null>(null);
 
     const handleVerifyShipment = async (data: CheckShipmentData) => {
