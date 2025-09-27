@@ -74,7 +74,7 @@ export function CustomSidebar({ children }: SidebarProps) {
     {
       icon: <Plus className="h-5 w-5" />,
       label: "Create Shipment",
-      href: "/dashboard/create-status",
+      href: "/dashboard/create-shipment",
       isActive: false,
     },
     {

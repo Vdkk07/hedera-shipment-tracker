@@ -5,7 +5,7 @@ import { ShipmentTable } from "@/components/ShipmentTable";
 import { Shipment, ShipmentStatus } from "@/types/shipment";
 import { CustomSidebar } from "@/components/CustomSidebar";
 
-export default function CheckStatusPage() {
+export default function CheckStatus() {
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

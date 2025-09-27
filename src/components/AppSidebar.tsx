@@ -21,8 +21,8 @@ import {
 const data = {
   navMain: [
     {
-      title: "Create Shipment",
-      url: "/dashboard?tab=create",
+      title: "Create Shipmentzz",
+      url: "/dashboard/create-shipment",
       icon: Plus,
       isActive: true,
     },
