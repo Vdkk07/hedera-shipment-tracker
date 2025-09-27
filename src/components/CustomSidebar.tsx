@@ -79,8 +79,8 @@ export function CustomSidebar({ children }: SidebarProps) {
     },
     {
       icon: <Search className="h-5 w-5" />,
-      label: "Check Status",
-      href: "/dashboard/check-status",
+      label: "Check Shipment",
+      href: "/dashboard/check-shipment",
       isActive: false,
     },
   ];

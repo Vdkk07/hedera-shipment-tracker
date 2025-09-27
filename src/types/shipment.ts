@@ -33,3 +33,20 @@ export interface ShipmentFilters {
   status?: ShipmentStatus;
   searchTerm?: string;
 }
+
+export interface CheckShipmentData {
+  shipmentId: string;
+  tokenId: string;
+  location: string;
+}
+
+export interface VerifyShipmentResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    shipmentId: string;
+    tokenId: string;
+    status: string;
+    location: string;
+  };
+}
