@@ -137,7 +137,7 @@ export function CreateShipmentForm({ onSubmit, isLoading = false }: CreateShipme
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-white text-black font-semibold"
             disabled={!isFormValid || isLoading}
           >
             {isLoading ? "Creating Shipment..." : "Create Shipment"}

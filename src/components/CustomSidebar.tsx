@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Plus, Search, Package, Home, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
   children: React.ReactNode;
@@ -24,8 +25,8 @@ const SidebarItem = ({ icon, label, isActive, onClick, href }: SidebarItemProps)
     <div
       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer ${
         isActive
-          ? "bg-blue-100 text-blue-700 border-r-2 border-blue-700"
-          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          ? "bg-primary text-primary-foreground"
+          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       }`}
       onClick={handleClick}
     >
@@ -86,7 +87,7 @@ export function CustomSidebar({ children }: SidebarProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-background">
       {/* Mobile Overlay */}
       {isMobile && isOpen && (
         <div
@@ -97,24 +98,26 @@ export function CustomSidebar({ children }: SidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:relative inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed md:relative inset-y-0 left-0 z-50 w-64 bg-card border-r border-border shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-border">
             <div className="flex items-center gap-2">
-              <Package className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-semibold text-gray-900">Hedera Tracker</span>
+              <Package className="h-6 w-6 text-primary" />
+              <span className="text-lg font-semibold text-foreground">Hedera Tracker</span>
             </div>
             {isMobile && (
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={toggleSidebar}
-                className="p-1 rounded-md hover:bg-gray-100 md:hidden"
+                className="md:hidden"
               >
                 <X className="h-5 w-5" />
-              </button>
+              </Button>
             )}
           </div>
 
@@ -132,8 +135,8 @@ export function CustomSidebar({ children }: SidebarProps) {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-200">
-            <div className="text-xs text-gray-500 text-center">
+          <div className="p-4 border-t border-border">
+            <div className="text-xs text-muted-foreground text-center">
               Hedera Shipment Tracker v1.0
             </div>
           </div>
@@ -143,22 +146,24 @@ export function CustomSidebar({ children }: SidebarProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
+        <header className="bg-card border-b border-border px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={toggleSidebar}
-                className="p-2 rounded-md hover:bg-gray-100 md:hidden"
+                className="md:hidden"
               >
                 <Menu className="h-5 w-5" />
-              </button>
-              <h1 className="text-xl font-semibold text-gray-900">Shipment Dashboard</h1>
+              </Button>
+              <h1 className="text-xl font-semibold text-foreground">Shipment Dashboard</h1>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-gray-50">
+        <main className="flex-1 overflow-auto bg-background">
           {children}
         </main>
       </div>
