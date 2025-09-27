@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,8 +20,12 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Index = () => {
+const router = useRouter();
+
+router.push("/dashboard");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const features = [
@@ -139,7 +143,11 @@ const Index = () => {
                 the future of logistics.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="text-lg px-8 py-6 rounded-2xl">
+                <Button
+                  size="lg"
+                  className="text-lg px-8 py-6 rounded-2xl"
+                  onClick={() => router.push("/dashboard")}
+                >
                   Start Tracking
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -208,7 +216,11 @@ const Index = () => {
               build trust, reduce costs, and ensure transparency in their
               operations.
             </p>
-            <Button size="lg" className="text-lg px-12 py-6 rounded-2xl">
+            <Button
+              size="lg"
+              className="text-lg px-12 py-6 rounded-2xl"
+              onClick={() => router.push("/dashboard")}
+            >
               Get Started Today
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
