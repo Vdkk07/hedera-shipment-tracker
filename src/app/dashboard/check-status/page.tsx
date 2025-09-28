@@ -65,7 +65,9 @@ export default function CheckStatus() {
     if (shipments.length === 0 && !isLoading) {
       setShipments(mockShipments);
     }
-  }, [shipments.length, isLoading]);
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shipments.length, isLoading]); 
 
   return (
     <CustomSidebar>

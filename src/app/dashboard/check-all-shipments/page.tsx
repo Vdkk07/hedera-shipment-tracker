@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AllShipmentsResponse, ShipmentData } from "@/types/shipment";
-import { ExternalLink, Package, MapPin, Calendar, User, Search, Filter, X } from "lucide-react";
+import { ExternalLink, Package, MapPin, Calendar, Search, Filter, X } from "lucide-react";
 import axios from "axios";
 
 export default function AllShipments() {

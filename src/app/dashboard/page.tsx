@@ -10,14 +10,11 @@ import {
   Clock, 
   Activity, 
   Shield, 
-  Zap, 
-  TrendingUp,
   ExternalLink,
   CheckCircle,
   AlertCircle,
   MapPin,
-  Calendar,
-  User
+  Calendar
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";

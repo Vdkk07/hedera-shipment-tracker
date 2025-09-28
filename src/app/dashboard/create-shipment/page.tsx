@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CreateShipmentForm } from "@/components/CreateShipmentForm";
-import { CreateShipmentData, ShipmentStatus } from "@/types/shipment";
+import { CreateShipmentData } from "@/types/shipment";
 import { CustomSidebar } from "@/components/CustomSidebar";
 import axios from "axios";
 
