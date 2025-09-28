@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CustomSidebar } from "@/components/CustomSidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AllShipmentsResponse, ShipmentData } from "@/types/shipment";
-import { ExternalLink, Package, MapPin, Calendar, User } from "lucide-react";
+import { ExternalLink, Package, MapPin, Calendar, User, Search, Filter, X } from "lucide-react";
 import axios from "axios";
 
 export default function AllShipments() {
@@ -15,6 +17,12 @@ export default function AllShipments() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pagination, setPagination] = useState<AllShipmentsResponse['pagination'] | null>(null);
+    
+    // Search and filter states
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<string>("all");
+    const [dateFilter, setDateFilter] = useState<string>("all");
+    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         fetchAllShipments();
@@ -61,6 +69,68 @@ export default function AllShipments() {
         });
     };
 
+    // Filter and search logic
+    const filteredShipments = useMemo(() => {
+        let filtered = [...shipments];
+
+        // Search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            filtered = filtered.filter(shipment =>
+                shipment.shipment_id.toLowerCase().includes(query) ||
+                shipment.sender.toLowerCase().includes(query) ||
+                shipment.receiver.toLowerCase().includes(query) ||
+                shipment.contents.toLowerCase().includes(query) ||
+                shipment.current_location.toLowerCase().includes(query) ||
+                shipment.current_owner.toLowerCase().includes(query)
+            );
+        }
+
+        // Status filter
+        if (statusFilter !== "all") {
+            filtered = filtered.filter(shipment =>
+                shipment.status.toLowerCase() === statusFilter.toLowerCase()
+            );
+        }
+
+        // Date filter
+        if (dateFilter !== "all") {
+            const now = new Date();
+            const filterDate = new Date();
+            
+            switch (dateFilter) {
+                case "today":
+                    filterDate.setHours(0, 0, 0, 0);
+                    filtered = filtered.filter(shipment =>
+                        new Date(shipment.created_at) >= filterDate
+                    );
+                    break;
+                case "week":
+                    filterDate.setDate(now.getDate() - 7);
+                    filtered = filtered.filter(shipment =>
+                        new Date(shipment.created_at) >= filterDate
+                    );
+                    break;
+                case "month":
+                    filterDate.setMonth(now.getMonth() - 1);
+                    filtered = filtered.filter(shipment =>
+                        new Date(shipment.created_at) >= filterDate
+                    );
+                    break;
+            }
+        }
+
+        return filtered;
+    }, [shipments, searchQuery, statusFilter, dateFilter]);
+
+    const clearFilters = () => {
+        setSearchQuery("");
+        setStatusFilter("all");
+        setDateFilter("all");
+    };
+
+    const hasActiveFilters = searchQuery || statusFilter !== "all" || dateFilter !== "all";
+
     if (loading) {
         return (
             <CustomSidebar>
@@ -100,13 +170,100 @@ export default function AllShipments() {
                     </Card>
                 )}
 
+                {/* Search and Filters */}
+                <Card className="mb-6">
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <CardTitle className="text-foreground">Search & Filters</CardTitle>
+                            <div className="flex items-center space-x-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setShowFilters(!showFilters)}
+                                >
+                                    <Filter className="h-4 w-4 mr-2" />
+                                    {showFilters ? 'Hide' : 'Show'} Filters
+                                </Button>
+                                {hasActiveFilters && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={clearFilters}
+                                    >
+                                        <X className="h-4 w-4 mr-2" />
+                                        Clear
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            {/* Search Bar */}
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                                <Input
+                                    placeholder="Search shipments by ID, sender, receiver, contents, location, or owner..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10"
+                                />
+                            </div>
+
+                            {/* Filters */}
+                            {showFilters && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div>
+                                        <label className="text-sm font-medium text-foreground mb-2 block">
+                                            Status
+                                        </label>
+                                        <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="All Statuses" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">All Statuses</SelectItem>
+                                                <SelectItem value="delivered">Delivered</SelectItem>
+                                                <SelectItem value="not delivered">In Transit</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm font-medium mb-2 block">
+                                            Date Range
+                                        </label>
+                                        <Select value={dateFilter} onValueChange={setDateFilter}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="All Time" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">All Time</SelectItem>
+                                                <SelectItem value="today">Today</SelectItem>
+                                                <SelectItem value="week">Last 7 Days</SelectItem>
+                                                <SelectItem value="month">Last 30 Days</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <div className="flex items-end">
+                                        <div className="text-sm text-muted-foreground">
+                                            {filteredShipments.length} of {shipments.length} shipments
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <Card>
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <div>
                                 <CardTitle className="text-foreground">Shipments Overview</CardTitle>
                                 <CardDescription className="text-muted-foreground">
-                                    {pagination ? `Showing ${shipments.length} of ${pagination.totalItems} shipments` : 'Loading...'}
+                                    {pagination ? `Showing ${filteredShipments.length} of ${pagination.totalItems} shipments` : 'Loading...'}
                                 </CardDescription>
                             </div>
                             <Button onClick={fetchAllShipments} variant="outline" size="sm">
@@ -115,11 +272,29 @@ export default function AllShipments() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {shipments.length === 0 ? (
+                        {filteredShipments.length === 0 ? (
                             <div className="text-center py-8">
                                 <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                                <h3 className="text-lg font-medium text-foreground mb-2">No shipments found</h3>
-                                <p className="text-muted-foreground">No shipments have been created yet.</p>
+                                <h3 className="text-lg font-medium text-foreground mb-2">
+                                    {shipments.length === 0 ? 'No shipments found' : 'No shipments match your filters'}
+                                </h3>
+                                <p className="text-muted-foreground">
+                                    {shipments.length === 0 
+                                        ? 'No shipments have been created yet.' 
+                                        : 'Try adjusting your search criteria or filters.'
+                                    }
+                                </p>
+                                {hasActiveFilters && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={clearFilters}
+                                        className="mt-4"
+                                    >
+                                        <X className="h-4 w-4 mr-2" />
+                                        Clear Filters
+                                    </Button>
+                                )}
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
@@ -137,7 +312,7 @@ export default function AllShipments() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {shipments.map((shipment) => (
+                                        {filteredShipments.map((shipment) => (
                                             <TableRow key={shipment.id}>
                                                 <TableCell className="font-medium">
                                                     #{shipment.id}
