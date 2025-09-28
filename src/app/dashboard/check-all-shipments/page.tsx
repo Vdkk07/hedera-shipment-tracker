@@ -31,7 +31,7 @@ export default function AllShipments() {
     const fetchAllShipments = async () => {
         try {
             setLoading(true);
-            const response = await axios.get<AllShipmentsResponse>("http://localhost:4000/api/all-shipments");
+            const response = await axios.get<AllShipmentsResponse>(`${process.env.BACKEND_URL}/api/all-shipments`);
             
             if (response.data.success) {
                 setShipments(response.data.data);

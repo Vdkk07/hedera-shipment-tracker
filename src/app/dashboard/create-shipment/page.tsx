@@ -14,7 +14,7 @@ export default function CreateShipment() {
 
         try {
             const response = await axios.post(
-                'http://localhost:4000/api/create-nft',
+                `${process.env.BACKEND_URL}/api/create-nft`,
                 {
                     tokenName: data.tokenName,
                     tokenSymbol: data.tokenSymbol,

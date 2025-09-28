@@ -21,7 +21,7 @@ export default function CheckShipment() {
 
         try {
             const response = await axios.get<VerifyShipmentResponse>(
-                `http://localhost:4000/api/verify-shipment`,
+                `${process.env.BACKEND_URL}/api/verify-shipment`,
                 {
                     params: {
                         shipmentId: data.shipmentId,

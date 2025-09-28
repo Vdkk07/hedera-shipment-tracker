@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Search, Package, Home, Menu, X, List, LogOutIcon } from "lucide-react";
+import { Plus, Search, Package, Home, Menu, X, List, LogOutIcon, Pen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
@@ -91,9 +91,15 @@ export function CustomSidebar({ children }: SidebarProps) {
       isActive: false,
     },
     {
+      icon: <Pen className="h-5 w-5" />,
+      label: "Escrow",
+      href: "/dashboard/escrow",
+      isActive: false,
+    },
+    {
       icon: <LogOutIcon className="h-5 w-5" />,
       label: "Logout",
-      href: "/dashboard/check-all-shipments",
+      href: "/",
       isActive: false,
     },
   ];
@@ -119,7 +125,7 @@ export function CustomSidebar({ children }: SidebarProps) {
           <div className="flex items-center justify-between p-4 border-b border-border">
             <div className="flex items-center gap-2">
               <Package className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold text-foreground">Hedera Tracker</span>
+              <span className="text-lg font-semibold text-foreground">LogiChain</span>
             </div>
             {isMobile && (
               <Button

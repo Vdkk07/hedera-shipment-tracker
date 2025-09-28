@@ -42,7 +42,7 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<AllShipmentsResponse>("http://localhost:4000/api/all-shipments");
+      const response = await axios.get<AllShipmentsResponse>(`${process.env.BACKEND_URL}/api/all-shipments`);
       
       if (response.data.success) {
         const shipmentData = response.data.data;
@@ -254,7 +254,7 @@ export default function Dashboard() {
                             {getStatusIcon(shipment.status)}
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className="font-medium">{shipment.shipment_id}</span>
+                                <span className="font-medium text-black">{shipment.shipment_id}</span>
                                 <span className="text-sm text-gray-500">•</span>
                                 <span className="text-sm text-gray-500">{shipment.contents}</span>
                               </div>
@@ -293,19 +293,19 @@ export default function Dashboard() {
                   <div className="p-2 bg-blue-100 rounded-lg">
                     <Plus className="h-4 w-4 text-blue-600" />
                   </div>
-                  <span className="font-medium">New Shipment</span>
+                  <span className="font-medium text-black">New Shipment</span>
                 </Link>
                 <Link href="/dashboard/check-shipment" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <Search className="h-4 w-4 text-green-600" />
                   </div>
-                  <span className="font-medium">Track Shipment</span>
+                  <span className="font-medium text-black">Track Shipment</span>
                 </Link>
                 <Link href="/dashboard/check-all-shipments" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <BarChart3 className="h-4 w-4 text-purple-600" />
                   </div>
-                  <span className="font-medium">View Analytics</span>
+                  <span className="font-medium text-black">View Analytics</span>
                 </Link>
               </div>
             </div>
@@ -313,7 +313,7 @@ export default function Dashboard() {
             {/* Recent Activity */}
             <div>
               <h2 className="text-2xl font-semibold mb-4">Recent Activity</h2>
-              <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="bg-white rounded-lg shadow border border-gray-200 p-4 text-black">
                 {loading ? (
                   <div className="text-center py-4">
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
@@ -326,7 +326,7 @@ export default function Dashboard() {
                 ) : (
                   <div className="space-y-4">
                     {recentActivity.map((shipment) => (
-                      <div key={shipment.id} className="flex items-start gap-3">
+                      <div key={shipment.id} className="flex items-start gap-3 text-black">
                         <div className="p-2 bg-blue-100 rounded-full">
                           <Package className="h-3 w-3 text-blue-600" />
                         </div>
