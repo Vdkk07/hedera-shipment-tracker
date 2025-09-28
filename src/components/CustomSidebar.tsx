@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Search, Package, Home, Menu, X, List } from "lucide-react";
+import { Plus, Search, Package, Home, Menu, X, List, LogOutIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
@@ -87,7 +87,13 @@ export function CustomSidebar({ children }: SidebarProps) {
     {
       icon: <List className="h-5 w-5" />,
       label: "All Shipments",
-      href: "/dashboard/Check All Shipments",
+      href: "/dashboard/check-all-shipments",
+      isActive: false,
+    },
+    {
+      icon: <LogOutIcon className="h-5 w-5" />,
+      label: "Logout",
+      href: "/dashboard/check-all-shipments",
       isActive: false,
     },
   ];
