@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hedera Shipment Tracker",
+  title: "LogiChain",
   description: "Track and manage shipments on the Hedera network",
 };
 
