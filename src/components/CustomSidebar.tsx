@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Search, Package, Home, Menu, X } from "lucide-react";
+import { Plus, Search, Package, Home, Menu, X, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
@@ -82,6 +82,12 @@ export function CustomSidebar({ children }: SidebarProps) {
       icon: <Search className="h-5 w-5" />,
       label: "Check Shipment",
       href: "/dashboard/check-shipment",
+      isActive: false,
+    },
+    {
+      icon: <List className="h-5 w-5" />,
+      label: "All Shipments",
+      href: "/dashboard/Check All Shipments",
       isActive: false,
     },
   ];
